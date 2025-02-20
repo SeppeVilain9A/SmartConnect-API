@@ -1,10 +1,10 @@
 import flet.fastapi as flet_fastapi
-
 from fastapi import Request, HTTPException
 import flet as ft
 import json
 import base64
 import datetime
+import uvicorn
 
 _username = "9ASmartConnectUSER"
 _password = "9APass@word01"
@@ -131,12 +131,18 @@ async def main(page: ft.Page):
     global _page
     _page = page
 
-    page.list_page = ft.ListView(
+    _page.list_page = ft.ListView(
         expand=True
     )
 
-    await page.add_async(
-        page.list_page
+    page.views[-1].controls.append(
+        _page.list_page
     )
 
+    page.update()
+
 app.mount("/", flet_fastapi.app(main))
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
+
